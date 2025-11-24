@@ -13,6 +13,23 @@ setup: ## Download and tidy dependencies
 test: ## Run tests (excludes examples)
 	go test -v -race -coverprofile=coverage.txt -covermode=atomic $$(go list ./... | grep -v /examples/)
 
+test-unit: ## Run only unit tests (skip integration tests)
+	go test -short -v $$(go list ./... | grep -v /examples/)
+
+test-integration: ## Run integration tests (requires PostgreSQL and Redis)
+	go test -v ./providers/redis
+	go test -v ./providers/postgres
+
+test-all: test-unit test-integration ## Run all tests
+
+docker-test-up: ## Start test infrastructure with Docker Compose
+	docker-compose -f docker-compose.test.yml up -d
+	@echo "Waiting for services to be ready..."
+	@sleep 5
+
+docker-test-down: ## Stop test infrastructure
+	docker-compose -f docker-compose.test.yml down -v
+
 lint: ## Run linter
 	golangci-lint run ./...
 
