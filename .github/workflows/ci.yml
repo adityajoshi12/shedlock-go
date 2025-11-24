@@ -33,11 +33,13 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-go-${{ matrix.go-version }}-
 
+    - name: Verify go.sum is up to date
+      run: |
+        go mod tidy
+        git diff --exit-code go.sum
+
     - name: Download dependencies
       run: go mod download
-
-    - name: Verify dependencies
-      run: go mod verify
 
     - name: Build
       run: go build -v ./...
@@ -94,6 +96,9 @@ jobs:
         key: ${{ runner.os }}-go-examples-${{ hashFiles('**/go.sum') }}
         restore-keys: |
           ${{ runner.os }}-go-examples-
+
+    - name: Verify dependencies
+      run: go mod verify
 
     - name: Download dependencies
       run: go mod download

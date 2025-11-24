@@ -16,4 +16,3 @@
 .vscode/
 coverage.txt
 coverage.out
-go.sum
