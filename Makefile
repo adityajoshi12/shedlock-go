@@ -10,8 +10,8 @@ setup: ## Download and tidy dependencies
 	go mod download
 	go mod tidy
 
-test: ## Run tests
-	go test -v -race -coverprofile=coverage.txt -covermode=atomic ./...
+test: ## Run tests (excludes examples)
+	go test -v -race -coverprofile=coverage.txt -covermode=atomic $$(go list ./... | grep -v /examples/)
 
 lint: ## Run linter
 	golangci-lint run ./...

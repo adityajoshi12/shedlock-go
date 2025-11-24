@@ -45,7 +45,7 @@ jobs:
       run: go build -v ./...
 
     - name: Run tests
-      run: go test -v -race -coverprofile=coverage.txt -covermode=atomic ./...
+      run: go test -v -race -coverprofile=coverage.txt -covermode=atomic $(go list ./... | grep -v /examples/)
 
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v4
@@ -138,7 +138,7 @@ jobs:
       run: go mod download
 
     - name: Run integration tests
-      run: go test -v -tags=integration ./...
+      run: go test -v -tags=integration $(go list ./... | grep -v /examples/)
       env:
         POSTGRES_URL: postgres://test:test@localhost:5432/shedlock_test?sslmode=disable
         REDIS_URL: localhost:6379

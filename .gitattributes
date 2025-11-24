@@ -1,0 +1,12 @@
+# Ensure consistent line endings
+* text=auto eol=lf
+
+# Go source files
+*.go text eol=lf
+
+# Shell scripts
+*.sh text eol=lf
+
+# Exclude examples from language statistics
+examples/* linguist-documentation
+

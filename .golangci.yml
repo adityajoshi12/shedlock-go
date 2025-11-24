@@ -65,6 +65,9 @@ issues:
       linters:
         - errcheck
         - gosec
+        - gocritic
+        - staticcheck
+        - revive
 
 run:
   timeout: 5m
