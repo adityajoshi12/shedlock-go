@@ -111,7 +111,7 @@ func (e *DefaultLockingTaskExecutor) ExecuteWithLock(
 	if config.LockAtLeastFor > 0 && taskDuration < config.LockAtLeastFor {
 		remainingTime := config.LockAtLeastFor - taskDuration
 		e.logger.Debug("Waiting for lockAtLeastFor period", "name", config.Name, "remainingTime", remainingTime)
-		
+
 		select {
 		case <-time.After(remainingTime):
 		case <-ctx.Done():
@@ -121,4 +121,3 @@ func (e *DefaultLockingTaskExecutor) ExecuteWithLock(
 
 	return nil
 }
-

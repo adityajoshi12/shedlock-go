@@ -46,4 +46,3 @@ type TaskResult struct {
 	// Error contains any error that occurred during execution
 	Error error
 }
-

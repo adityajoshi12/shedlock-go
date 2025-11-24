@@ -243,4 +243,3 @@ func TestLockAssert(t *testing.T) {
 	TestHelper{}.MakeAllAssertsPass(false)
 	AssertLocked()
 }
-

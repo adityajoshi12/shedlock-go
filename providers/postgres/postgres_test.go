@@ -434,4 +434,3 @@ func TestGetHostname(t *testing.T) {
 		t.Error("expected hostname to be non-empty")
 	}
 }
-
