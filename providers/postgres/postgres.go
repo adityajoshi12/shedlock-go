@@ -1,3 +1,37 @@
+// Package postgres provides a PostgreSQL-based lock provider for ShedLock.
+//
+// This package implements distributed locking using a PostgreSQL database table
+// to coordinate lock acquisition across multiple nodes.
+//
+// # Usage
+//
+// First, create a database connection and lock provider:
+//
+//	db, err := sql.Open("postgres", "postgres://user:pass@localhost/db")
+//	provider, err := postgres.NewPostgresLockProvider(postgres.Config{
+//	    DB:        db,
+//	    TableName: "shedlock",
+//	})
+//
+// Create the lock table (run once):
+//
+//	err := provider.CreateTable(context.Background())
+//
+// Use with a task executor:
+//
+//	executor := shedlock.NewDefaultLockingTaskExecutor(provider)
+//	err := executor.ExecuteWithLock(ctx, task, lockConfig)
+//
+// # Table Schema
+//
+// The provider creates a table with the following schema:
+//
+//	CREATE TABLE shedlock (
+//	    name VARCHAR(64) PRIMARY KEY,
+//	    lock_until TIMESTAMP NOT NULL,
+//	    locked_at TIMESTAMP NOT NULL,
+//	    locked_by VARCHAR(255) NOT NULL
+//	)
 package postgres
 
 import (

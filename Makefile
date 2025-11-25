@@ -48,6 +48,14 @@ clean: ## Clean build artifacts
 	rm -rf bin/
 	rm -f go.sum
 
+release: ## Create a new release (usage: make release VERSION=v1.0.0)
+ifndef VERSION
+	@echo "Error: VERSION is required"
+	@echo "Usage: make release VERSION=v1.0.0"
+	@exit 1
+endif
+	@./release.sh $(VERSION)
+
 run-postgres: ## Run PostgreSQL example
 	go run ./examples/postgres/main.go
 

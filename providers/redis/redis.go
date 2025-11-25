@@ -1,3 +1,34 @@
+// Package redis provides a Redis-based lock provider for ShedLock.
+//
+// This package implements distributed locking using Redis keys with TTL
+// to coordinate lock acquisition across multiple nodes.
+//
+// # Usage
+//
+// First, create a Redis client and lock provider:
+//
+//	client := redis.NewClient(&redis.Options{
+//	    Addr: "localhost:6379",
+//	})
+//	provider, err := redis.NewRedisLockProvider(redis.Config{
+//	    Client: client,
+//	    Prefix: "shedlock:",
+//	})
+//
+// Use with a task executor:
+//
+//	executor := shedlock.NewDefaultLockingTaskExecutor(provider)
+//	err := executor.ExecuteWithLock(ctx, task, lockConfig)
+//
+// # Lock Storage
+//
+// Locks are stored as Redis keys with the format: {prefix}{lockName}
+// The keys automatically expire after LockAtMostFor duration.
+//
+// # Atomic Operations
+//
+// The provider uses Lua scripts to ensure atomic lock operations,
+// preventing race conditions during lock release and extension.
 package redis
 
 import (

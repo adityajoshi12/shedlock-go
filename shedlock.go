@@ -1,3 +1,43 @@
+// Package shedlock provides distributed locking for scheduled tasks.
+//
+// ShedLock ensures that your scheduled tasks are executed at most once at the same time.
+// If a task is being executed on one node, it acquires a lock which prevents execution
+// of the same task from another node (or thread). If one task is already being executed
+// on one node, execution on other nodes does not wait, it is simply skipped.
+//
+// # Basic Usage
+//
+// First, create a lock provider (PostgreSQL or Redis):
+//
+//	provider, err := redis.NewRedisLockProvider(redis.Config{
+//	    Client: redisClient,
+//	})
+//
+// Then create a task executor:
+//
+//	executor := shedlock.NewDefaultLockingTaskExecutor(provider)
+//
+// Execute your task with a lock:
+//
+//	err := executor.ExecuteWithLock(ctx, myTask, shedlock.LockConfiguration{
+//	    Name:           "myScheduledTask",
+//	    LockAtMostFor:  10 * time.Minute,
+//	    LockAtLeastFor: 0,
+//	})
+//
+// # Lock Providers
+//
+// ShedLock supports multiple storage backends:
+//   - PostgreSQL (github.com/adityajoshi12/shedlock-go/providers/postgres)
+//   - Redis (github.com/adityajoshi12/shedlock-go/providers/redis)
+//
+// # Lock Configuration
+//
+// LockAtMostFor specifies how long the lock should be kept in case the executing
+// node dies. This is a safety mechanism to prevent deadlocks.
+//
+// LockAtLeastFor specifies the minimum amount of time for which the lock should
+// be kept. This prevents the task from executing too frequently.
 package shedlock
 
 import (
